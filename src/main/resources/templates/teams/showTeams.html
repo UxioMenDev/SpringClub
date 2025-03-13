@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/base}">
+<div layout:fragment="content">
+    <div class="container mb-3">
+        <a href="/teams/form">
+            <button class="btn btn-info mb-3">Añadir equipo</button>
+        </a>
+        <table class="table table-striped">
+            <thead class="table-dark text-center">
+            <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Año</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="team : ${teams}" class="text-center">
+                <td th:text="${team.title}"></td>
+                <td th:text="${team.year}"></td>
+                <td>
+                    <a th:href="@{/teams/edit(id=${team.id})}">
+                        <button class="btn btn-info mr-3">Editar</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</html>

@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/base}">
+<div layout:fragment="content">
+    <div class="container">
+        <h1>Formulario de equipo</h1>
+        <form method="post" th:action="@{/teams/create}" th:object="${team}">
+            <input type="hidden" th:field="*{id}" />
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Titulo</label>
+                <input type="text" class="form-control" id="titulo" placeholder="Título del equipo" th:field="*{title}" />
+            </div>
+            <div class="mb-3">
+                <label for="anno" class="form-label">Año</label>
+                <input type="number" class="form-control" id="anno" th:field="*{year}" />
+            </div>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlSelect1">Entrenador</label>
+                <select class="form-control" id="exampleFormControlSelect1" th:field="*{coach}">
+                    <option th:each="coach : ${coaches}" th:value="${coach.id}" th:text="${coach.name}"></option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlSelect1">Jugadores</label>
+                <select class="form-control" id="exampleFormControlSelect1" th:field="*{players}" multiple>
+                    <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-3" value="crearTeam">Aceptar</button>
+            <div th:if="${team.id} != 0">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Borrar</button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Advertencia</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">Se eliminará el elemento permanentemente</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <a th:href="@{/teams/delete(id=${team.id})}">
+                                    <button type="button" class="btn btn-danger">Borrar</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</html>

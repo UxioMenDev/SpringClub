@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>acda-uxio-mendez</artifactId>
+	<artifactId>SpringClub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>acda-uxio-mendez</name>
 	<description>Demo project for Spring Boot</description>

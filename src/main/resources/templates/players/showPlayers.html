@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/base}">
+<div layout:fragment="content">
+    <div class="container mb-3">
+        <a href="/player/form">
+            <button class="btn btn-info mb-3">Añadir jugador</button>
+        </a>
+        <div class="row d-flex mb-3">
+            <div th:each="player : ${players}" class="card me-3">
+                <img th:src="@{${player.imagePath}}" class="card-img-top" alt="..." />
+                <div class="card-body">
+                    <p class="card-text" th:text="${player.name}"></p>
+                    <ul class="list-group list-group-flush" th:each="team : ${player.teams}">
+                        <li class="list-group-item" th:text="${team.title}"></li>
+                    </ul>
+                    <a th:href="@{/player/edit(id=${player.id})}">
+                        <button class="btn btn-info">Editar</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
