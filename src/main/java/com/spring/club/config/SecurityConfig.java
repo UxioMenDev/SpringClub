@@ -19,13 +19,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/css/**").permitAll()
                     .requestMatchers("/login").permitAll()
-                    .requestMatchers("/add").permitAll()
-                    .requestMatchers("/register").permitAll()
                     .anyRequest().authenticated())
 
             .formLogin(form -> form
                     .loginPage("/login")
-                    .defaultSuccessUrl("/peliculas/lista", true)
+                    .defaultSuccessUrl("/teams/list", true)
                     .permitAll());
 
     return http.build();

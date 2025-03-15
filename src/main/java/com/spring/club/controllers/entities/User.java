@@ -1,13 +1,11 @@
 package com.spring.club.controllers.entities;
 
 import java.util.Collection;
+import java.util.Set;
 
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,4 +22,7 @@ public class User {
     private String username;
     private String password;
     private Collection<GrantedAuthority> roles;
+    @OneToMany
+    private Set<Player> players;
+
 }
