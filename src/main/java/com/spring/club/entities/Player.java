@@ -1,10 +1,10 @@
-package com.spring.club.controllers.entities;
+package com.spring.club.entities;
 
 import java.util.Date;
 import java.util.Set;
 
-import com.spring.club.controllers.entities.enums.Gender;
-import com.spring.club.controllers.entities.enums.Category;
+import com.spring.club.entities.enums.Gender;
+import com.spring.club.entities.enums.Category;
 
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;

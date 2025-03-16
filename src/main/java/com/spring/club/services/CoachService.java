@@ -1,7 +1,7 @@
 package com.spring.club.services;
 
 import java.util.List;
-import com.spring.club.controllers.entities.Coach;
+import com.spring.club.entities.Coach;
 
 public interface CoachService {
     void create(Coach c);

@@ -2,7 +2,7 @@ package com.spring.club.services;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.spring.club.controllers.entities.Player;
+import com.spring.club.entities.Player;
 import com.spring.club.repositories.PlayerRepository;
 
 @Service

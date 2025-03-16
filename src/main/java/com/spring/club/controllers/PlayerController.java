@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.club.controllers.entities.Player;
+import com.spring.club.entities.Player;
 
 import jakarta.servlet.http.HttpServletRequest;
 

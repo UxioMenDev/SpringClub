@@ -1,4 +1,4 @@
-package com.spring.club.controllers.entities;
+package com.spring.club.entities;
 
 import java.util.Collection;
 import java.util.Set;

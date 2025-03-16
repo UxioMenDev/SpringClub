@@ -1,24 +1,30 @@
 package com.spring.club.config;
 
+import java.time.LocalDateTime;
+import java.time.MonthDay;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import com.spring.club.controllers.entities.Country;
+import com.spring.club.entities.Country;
 import com.spring.club.repositories.CountryRepository;
+import com.spring.club.repositories.SeasonRepository;
+import com.spring.club.services.SeasonService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class DataInitializer {
 
     @Bean
-    CommandLineRunner initDatabase(CountryRepository countryRepository) {
+    CommandLineRunner initDatabase(CountryRepository countryRepository, SeasonService seasonService, SeasonRepository seasonRepository) {
         return args -> {
+
+            if (seasonRepository.count() ==0){
+                    seasonService.getCurrentSeason();
+                }
+
+
             if (countryRepository.count() == 0) {
                 List<String> countries = Arrays.asList(
                         "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",

@@ -1,6 +1,6 @@
 package com.spring.club.repositories;
 
-import com.spring.club.controllers.entities.Country;
+import com.spring.club.entities.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {

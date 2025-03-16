@@ -1,6 +1,6 @@
 package com.spring.club.services;
 
-import com.spring.club.controllers.entities.User;
+import com.spring.club.entities.User;
 
 public interface UserService {
     void create(User u);

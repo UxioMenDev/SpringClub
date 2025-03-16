@@ -1,7 +1,7 @@
 package com.spring.club.services;
 
 import java.util.List;
-import com.spring.club.controllers.entities.Player;
+import com.spring.club.entities.Player;
 
 public interface PlayerService {
     void create(Player p);

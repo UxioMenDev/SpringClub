@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.spring.club.controllers.entities.Player;
-import com.spring.club.controllers.entities.Coach;
-import com.spring.club.controllers.entities.Team;
+import com.spring.club.entities.Player;
+import com.spring.club.entities.Coach;
+import com.spring.club.entities.Team;
 
 import jakarta.servlet.http.HttpServletRequest;
 

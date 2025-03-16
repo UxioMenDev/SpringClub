@@ -1,7 +1,7 @@
 package com.spring.club.services;
 
 import java.util.List;
-import com.spring.club.controllers.entities.Team;
+import com.spring.club.entities.Team;
 
 public interface TeamService {
     void create(Team t);
