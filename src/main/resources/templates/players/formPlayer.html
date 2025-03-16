@@ -9,13 +9,89 @@
                 <label for="nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="nombre" placeholder="Nombre del jugador" th:field="*{name}" />
             </div>
+
+            <div class="mb-3">
+                <label for="idCard" class="form-label">DNI/NIE</label>
+                <input type="text" class="form-control" id="idCard" placeholder="DNI/NIE" th:field="*{idCard}" required />
+            </div>
+            <div class="mb-3">
+                <label for="licenseNumber" class="form-label">Número de licencia</label>
+                <input type="text" class="form-control" id="licenseNumber" placeholder="Número de licencia" th:field="*{licenseNumber}" />
+            </div>
+            <div class="mb-3">
+                <label for="birthdate" class="form-label">Fecha de nacimiento</label>
+                <input type="date" class="form-control" id="birthdate" th:field="*{birthdate}" required />
+            </div>
+            <div class="mb-3">
+                <label for="placeOfBirth" class="form-label">Lugar de nacimiento</label>
+                <input type="text" class="form-control" id="placeOfBirth" th:field="*{placeOfBirth}" required />
+            </div>
+            <div class="mb-3">
+                <label for="sex" class="form-label">Sexo</label>
+                <select class="form-control" id="sex" th:field="*{sex}" required>
+                    <option th:each="gender : ${T(com.spring.club.entities.enums.Gender).values()}"
+                            th:value="${gender}" th:text="${gender}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" th:field="*{email}" required />
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="phone" th:field="*{phone}" required />
+            </div>
+
+
+            <div class="mb-3">
+                <label for="street" class="form-label">Calle</label>
+                <input type="text" class="form-control" id="street" th:field="*{street}" required />
+            </div>
+            <div class="mb-3">
+                <label for="city" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="city" th:field="*{city}" />
+            </div>
+            <div class="mb-3">
+                <label for="zip" class="form-label">Código postal</label>
+                <input type="number" class="form-control" id="zip" th:field="*{zip}" required />
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">País de residencia</label>
+                <select class="form-control" id="country" th:field="*{country}" required>
+                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="nationality" class="form-label">Nacionalidad</label>
+                <select class="form-control" id="nationality" th:field="*{nationality}">
+                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Categoría</label>
+                <select class="form-control" id="category" th:field="*{category}">
+                    <option th:each="cat : ${T(com.spring.club.entities.enums.Category).values()}"
+                            th:value="${cat}" th:text="${cat}"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="seasonSelect">Temporada</label>
+                <select class="form-control" id="seasonSelect" th:field="*{seasons}" multiple>
+                    <option th:each="season : ${seasons}" th:value="${season.id}" th:text="${season.season}"></option>
+                </select>
+            </div>
+
             <div class="form-group mb-3">
-                <label for="imagen">Imagen</label>
-                <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" />
+                <label for="image">Imagen</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" />
             </div>
             <button type="submit" class="btn btn-info mb-3" value="crearPlayer">Aceptar</button>
             <div th:if="${player.id} != 0">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Borrar</button>
+
+
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -34,6 +110,7 @@
                     </div>
                 </div>
             </div>
+
         </form>
     </div>
 </div>

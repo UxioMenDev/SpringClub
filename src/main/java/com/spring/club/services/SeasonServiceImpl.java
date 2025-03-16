@@ -6,6 +6,8 @@ import com.spring.club.utils.SeasonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SeasonServiceImpl implements SeasonService {
 
@@ -34,5 +36,10 @@ public class SeasonServiceImpl implements SeasonService {
         Season newSeason = new Season();
         newSeason.setSeason(nextSeason);
         seasonRepository.save(newSeason);
+    }
+
+    @Override
+    public List<Season> findAll() {
+        return seasonRepository.findAll();
     }
 }

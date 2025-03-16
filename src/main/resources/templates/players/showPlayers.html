@@ -4,20 +4,31 @@
         <a href="/player/form">
             <button class="btn btn-info mb-3">Añadir jugador</button>
         </a>
-        <div class="row d-flex mb-3">
-            <div th:each="player : ${players}" class="card me-3">
-                <img th:src="@{${player.imagePath}}" class="card-img-top" alt="..." />
-                <div class="card-body">
-                    <p class="card-text" th:text="${player.name}"></p>
-                    <ul class="list-group list-group-flush" th:each="team : ${player.teams}">
-                        <li class="list-group-item" th:text="${team.title}"></li>
-                    </ul>
-                    <a th:href="@{/player/edit(id=${player.id})}">
-                        <button class="btn btn-info">Editar</button>
-                    </a>
-                </div>
+        <div th:each="player : ${players}" class="card me-3" style="width: 18rem;">
+            <img th:src="@{${player.imagePath}}" class="card-img-top" alt="..." />
+            <div class="card-body">
+                <h5 class="card-title" th:text="${player.name}"></h5>
+                <p class="card-text">
+                    <span class="badge bg-info" th:text="${player.category}"></span>
+                    <span class="badge bg-secondary" th:text="${player.licenseNumber}"></span>
+                </p>
+                <p class="card-text"><small class="text-muted" th:text="'DNI/NIE: ' + ${player.idCard}"></small></p>
+                <p class="card-text"><small class="text-muted" th:text="'Tel: ' + ${player.phone}"></small></p>
+                <p class="card-text"><small class="text-muted" th:text="${player.email}"></small></p>
+
+                <h6>Temporadas:</h6>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="season : ${player.seasons}" th:text="${season.season}"></li>
+                </ul>
+
+                <h6 class="mt-2">Equipos:</h6>
+                <ul class="list-group list-group-flush" th:each="team : ${player.teams}">
+                    <li class="list-group-item" th:text="${team.title}"></li>
+                </ul>
+                <a th:href="@{/player/edit(id=${player.id})}">
+                    <button class="btn btn-info mt-2">Editar</button>
+                </a>
             </div>
-        </div>
     </div>
 </div>
 </html>
