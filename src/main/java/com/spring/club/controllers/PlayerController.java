@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import com.spring.club.entities.Country;
 import com.spring.club.entities.Season;
+import com.spring.club.entities.enums.Category;
 import com.spring.club.services.CountryService;
 import com.spring.club.services.PlayerService;
 import com.spring.club.services.SeasonService;
@@ -98,6 +99,14 @@ public class PlayerController {
         model.addAttribute("player", p);
         model.addAttribute("player", p);
         return "players/formPlayer";
+    }
+
+    @GetMapping("/filter")
+    public String filterByCategory(@RequestParam("category") Category category, Model model, HttpServletRequest request) {
+        List<Player> filteredPlayers = playerService.findByCategory(category);
+        model.addAttribute("players", filteredPlayers);
+        model.addAttribute("currentURI", request.getRequestURI());
+        return "players/showPlayers";
     }
 
     @InitBinder

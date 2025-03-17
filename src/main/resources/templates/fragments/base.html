@@ -34,6 +34,16 @@
           <a class="nav-link" th:classappend="${currentURI == '/teams/list'} ? 'active'" aria-current="page" href="/teams/list">Equipos</a>
         </li>
         <li class="nav-item">
+        <li class="nav-item dropdown" >
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categorías
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li th:each="category : ${T(com.spring.club.entities.enums.Category).values()}">
+              <a class="dropdown-item" th:href="@{/player/filter(category=${category})}" th:text="${category}"></a>
+            </li>
+          </ul>
+        </li>
           <a class="nav-link" th:classappend="${currentURI == '/player/list'} ? 'active'" aria-current="page" href="/player/list">Jugadores</a>
         </li>
         <li class="nav-item">

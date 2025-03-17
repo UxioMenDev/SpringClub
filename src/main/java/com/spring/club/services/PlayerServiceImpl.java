@@ -1,6 +1,8 @@
 package com.spring.club.services;
 
 import java.util.List;
+
+import com.spring.club.entities.enums.Category;
 import org.springframework.stereotype.Service;
 import com.spring.club.entities.Player;
 import com.spring.club.repositories.PlayerRepository;
@@ -32,5 +34,10 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void delete(Player p) {
         playerRepository.delete(p);
+    }
+
+    @Override
+    public List<Player> findByCategory(Category category) {
+        return playerRepository.findByCategory(category);
     }
 }
