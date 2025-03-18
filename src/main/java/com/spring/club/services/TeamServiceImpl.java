@@ -1,6 +1,8 @@
 package com.spring.club.services;
 
 import java.util.List;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.spring.club.entities.Team;
 import com.spring.club.repositories.TeamRepository;
@@ -16,7 +18,11 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void create(Team t) {
-        teamRepository.save(t);
+        try {
+            teamRepository.save(t);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("Ya existe un equipo para esta categoría y género en la temporada actual");
+        }
     }
 
     @Override

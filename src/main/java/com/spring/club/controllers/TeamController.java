@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.spring.club.services.PlayerService;
 import com.spring.club.services.CoachService;
+import com.spring.club.services.SeasonService;
 import com.spring.club.services.TeamService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import com.spring.club.entities.Team;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/teams")
@@ -27,15 +29,21 @@ public class TeamController {
     private TeamService teamService;
     private CoachService coachService;
     private PlayerService playerService;
+    private final SeasonService seasonService;
 
-    public TeamController(TeamService teamService, CoachService coachService, PlayerService playerService) {
+
+    public TeamController(TeamService teamService, CoachService coachService, PlayerService playerService, SeasonService seasonService) {
         this.teamService = teamService;
         this.coachService = coachService;
         this.playerService = playerService;
+        this.seasonService = seasonService;
     }
 
     @GetMapping("form")
     public String showForm(@ModelAttribute Team t, Model model) {
+        Team team = new Team();
+        team.setSeason(seasonService.getCurrentSeason());
+        model.addAttribute("team", team);
         List<Coach> coaches = coachService.findAll();
         model.addAttribute("coaches", coaches);
         List<Player> players = playerService.findAll();
@@ -44,9 +52,14 @@ public class TeamController {
     }
 
     @PostMapping("create")
-    public String create(@ModelAttribute Team t) {
-        teamService.create(t);
-        return "redirect:/teams/list";
+    public String create(@ModelAttribute Team t, RedirectAttributes redirectAttributes) {
+        try {
+            teamService.create(t);
+            return "redirect:/teams/list";
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/teams/form";
+        }
     }
 
     @GetMapping("list")

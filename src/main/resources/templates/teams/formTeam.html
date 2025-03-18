@@ -1,13 +1,34 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/base}">
 <div layout:fragment="content">
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
     <div class="container">
         <h1>Formulario de equipo</h1>
         <form method="post" th:action="@{/teams/create}" th:object="${team}">
             <input type="hidden" th:field="*{id}" />
             <div class="form-group mb-3">
-                <label for="seasonSelect">Temporada</label>
-                <select class="form-control" id="seasonSelect" th:field="*{season}">
-                    <option th:each="season : ${seasons}" th:value="${season.id}" th:text="${season.season}"></option>
+                <label>Temporada</label>
+                <input type="text" class="form-control" th:value="${team.season.season}" readonly />
+                <input type="hidden" th:field="*{season}" />
+            </div>
+            <div class="form-group mb-3">
+                <label for="categorySelect">Categoría</label>
+                <select class="form-control" id="categorySelect" th:field="*{category}">
+                    <option th:each="category : ${T(com.spring.club.entities.enums.Category).values()}"
+                            th:value="${category}"
+                            th:text="${category}"></option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="genderSelect">Género</label>
+                <select class="form-control" id="genderSelect" th:field="*{gender}">
+                    <option th:each="gender : ${T(com.spring.club.entities.enums.Gender).values()}"
+                            th:value="${gender}"
+                            th:text="${gender}"></option>
                 </select>
             </div>
             <div class="form-group mb-3">

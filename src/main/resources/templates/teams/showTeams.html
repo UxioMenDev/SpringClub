@@ -8,14 +8,17 @@
             <thead class="table-dark text-center">
             <tr>
                 <th scope="col">Temporada</th>
-                <th scope="col">Entrenador</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Género</th>
                 <th scope="col">Jugadores</th>
+                <th scope="col">Acciones</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="team : ${teams}" class="text-center">
                 <td th:text="${team.season?.season}"></td>
-                <td th:text="${team.coach?.name}"></td>
+                <td th:text="${team.category}"></td>
+                <td th:text="${team.gender}"></td>
                 <td th:text="${team.players?.size()}"></td>
                 <td>
                     <a th:href="@{/teams/edit(id=${team.id})}">
