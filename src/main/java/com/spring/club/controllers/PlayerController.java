@@ -116,4 +116,11 @@ public class PlayerController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
+    @ModelAttribute("seasons")
+    public List<Season> getAllSeasons() {
+        return seasonService.findAll();
+    }
+
+
+
 }

@@ -33,6 +33,16 @@
         <li class="nav-item">
           <a class="nav-link" th:classappend="${currentURI == '/teams/list'} ? 'active'" aria-current="page" href="/teams/list">Equipos</a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="seasonsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Temporadas
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="seasonsDropdown">
+            <li th:each="season : ${seasons}">
+              <a class="dropdown-item" th:href="@{/teams/filter(season=${season.id})}" th:text="${season.season}"></a>
+            </li>
+          </ul>
+        </li>
         <li class="nav-item">
         <li class="nav-item dropdown" >
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">

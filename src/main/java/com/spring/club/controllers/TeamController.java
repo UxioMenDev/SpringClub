@@ -2,6 +2,7 @@ package com.spring.club.controllers;
 
 import java.util.List;
 
+import com.spring.club.entities.Season;
 import com.spring.club.services.PlayerService;
 import com.spring.club.services.CoachService;
 import com.spring.club.services.SeasonService;
@@ -86,6 +87,20 @@ public class TeamController {
         List<Player> players = playerService.findAll();
         model.addAttribute("players", players);
         return "teams/formTeam";
+    }
+
+
+
+    @GetMapping("filter")
+    public String filterBySeasons(@RequestParam("season") Long seasonId, Model model) {
+        List<Team> teams = teamService.findBySeasonId(seasonId);
+        model.addAttribute("teams", teams);
+        return "teams/showTeams";
+    }
+
+    @ModelAttribute("seasons")
+    public List<Season> getAllSeasons() {
+        return seasonService.findAll();
     }
 
 }

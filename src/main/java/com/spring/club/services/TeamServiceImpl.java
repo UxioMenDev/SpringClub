@@ -39,4 +39,9 @@ public class TeamServiceImpl implements TeamService {
     public void delete(Team t) {
         teamRepository.delete(t);
     }
+
+    @Override
+    public List<Team> findBySeasonId(Long seasonId) {
+        return teamRepository.findBySeasonId(seasonId);
+    }
 }

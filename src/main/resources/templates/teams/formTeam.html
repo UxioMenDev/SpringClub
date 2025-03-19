@@ -32,14 +32,14 @@
                 </select>
             </div>
             <div class="form-group mb-3">
-                <label for="exampleFormControlSelect1">Entrenador</label>
-                <select class="form-control" id="exampleFormControlSelect1" th:field="*{coach}">
+                <label for="coachSelect">Entrenador</label>
+                <select class="form-control" id="coachSelect" th:field="*{coach}">
                     <option th:each="coach : ${coaches}" th:value="${coach.id}" th:text="${coach.name}"></option>
                 </select>
             </div>
             <div class="form-group mb-3">
-                <label for="exampleFormControlSelect1">Jugadores</label>
-                <select class="form-control" id="exampleFormControlSelect1" th:field="*{players}" multiple>
+                <label for="playersSelect">Jugadores</label>
+                <select class="form-control" id="playersSelect" th:field="*{players}" multiple>
                     <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}"></option>
                 </select>
             </div>

@@ -12,4 +12,6 @@ import com.spring.club.entities.Team;
 public interface TeamRepository extends JpaRepository<Team, Integer> {
     public List<Team> findAll();
     Optional<Team> findById(int id);
+    List<Team> findBySeasonId(Long seasonId);
+
 }

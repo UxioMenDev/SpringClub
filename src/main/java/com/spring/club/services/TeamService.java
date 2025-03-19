@@ -8,4 +8,5 @@ public interface TeamService {
     List<Team> findAll();
     Team findById(int id);
     void delete(Team t);
+    List<Team> findBySeasonId(Long SeasonId);
 }

@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
+import com.spring.club.entities.Season;
 import com.spring.club.services.CoachService;
+import com.spring.club.services.SeasonService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +28,12 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CoachController {
 
     private CoachService coachService;
+    private SeasonService seasonService;
 
-    public CoachController(CoachService coachService) {
+    public CoachController(CoachService coachService, SeasonService seasonService)
+    {
         this.coachService = coachService;
+        this.seasonService = seasonService;
     }
 
     @GetMapping("form")
@@ -81,5 +86,11 @@ public class CoachController {
         model.addAttribute("coach", c);
         return "coaches/formCoach";
     }
+
+    @ModelAttribute("seasons")
+    public List<Season> getAllSeasons() {
+        return seasonService.findAll();
+    }
+
 
 }
