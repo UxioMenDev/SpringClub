@@ -4,6 +4,7 @@
         <a href="/player/form">
             <button class="btn btn-info mb-3">Añadir jugador</button>
         </a>
+        <div class="row">
         <div th:each="player : ${players}" class="card me-3" style="width: 18rem;">
             <img th:src="@{${player.imagePath}}" class="card-img-top" alt="..." />
             <div class="card-body">
@@ -29,6 +30,7 @@
                     <button class="btn btn-info mt-2">Editar</button>
                 </a>
             </div>
+        </div>
     </div>
 </div>
 </html>

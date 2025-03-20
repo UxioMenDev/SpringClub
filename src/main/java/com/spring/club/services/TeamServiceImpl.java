@@ -2,6 +2,9 @@ package com.spring.club.services;
 
 import java.util.List;
 
+import com.spring.club.entities.Season;
+import com.spring.club.entities.enums.Category;
+import com.spring.club.entities.enums.Gender;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.spring.club.entities.Team;
@@ -43,5 +46,10 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<Team> findBySeasonId(Long seasonId) {
         return teamRepository.findBySeasonId(seasonId);
+    }
+
+    @Override
+    public List<Team> findBySeasonAndCategoryAndGender(Season season, Category category, Gender gender) {
+        return teamRepository.findBySeasonAndCategoryAndGender(season, category, gender);
     }
 }

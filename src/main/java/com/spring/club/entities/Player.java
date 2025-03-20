@@ -1,5 +1,6 @@
 package com.spring.club.entities;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -70,4 +71,32 @@ public class Player {
     private Set<Season> seasons;
     @Column(name = "license_number")
     private String licenseNumber;
-}
+
+    public void calculateCategory() {
+        if (this.birthdate == null) return;
+
+        Calendar now = Calendar.getInstance();
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(this.birthdate);
+
+        Calendar referenceDate = Calendar.getInstance();
+        referenceDate.set(Calendar.MONTH, Calendar.SEPTEMBER);
+        referenceDate.set(Calendar.DAY_OF_MONTH, 30);
+
+        int age = referenceDate.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        if (referenceDate.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        if (age >= 19) {
+            this.category = Category.ABSOLUTO;
+        } else if (age >= 17) {
+            this.category = Category.JUVENIL;
+        } else if (age >= 15) {
+            this.category = Category.CADETE;
+        } else if (age >= 13) {
+            this.category = Category.INFANTIL;
+        } else {
+            this.category = Category.ALEVIN;
+        }
+}}

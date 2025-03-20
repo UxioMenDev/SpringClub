@@ -68,13 +68,12 @@
                     <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
                 </select>
             </div>
-
             <div class="mb-3">
                 <label for="category" class="form-label">Categoría</label>
-                <select class="form-control" id="category" th:field="*{category}">
-                    <option th:each="cat : ${T(com.spring.club.entities.enums.Category).values()}"
-                            th:value="${cat}" th:text="${cat}"></option>
+                <select class="form-control" id="category" disabled>
+                    <option th:value="${player.category}" th:text="${player.category}" selected></option>
                 </select>
+                <input type="hidden" th:field="*{category}" />
             </div>
             <div class="mb-3">
                 <label for="seasonSelect">Temporada</label>

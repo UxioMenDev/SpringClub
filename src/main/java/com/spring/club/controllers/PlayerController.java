@@ -11,10 +11,12 @@ import java.util.UUID;
 
 import com.spring.club.entities.Country;
 import com.spring.club.entities.Season;
+import com.spring.club.entities.Team;
 import com.spring.club.entities.enums.Category;
 import com.spring.club.services.CountryService;
 import com.spring.club.services.PlayerService;
 import com.spring.club.services.SeasonService;
+import com.spring.club.services.TeamService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,11 +35,13 @@ public class PlayerController {
     private final PlayerService playerService;
     private final CountryService countryService;
     private final SeasonService seasonService;
+    private final TeamService teamService;
 
-    public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService) {
+    public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService, TeamService teamService) {
         this.playerService = playerService;
         this.countryService = countryService;
         this.seasonService = seasonService;
+        this.teamService = teamService;
     }
 
     @GetMapping("form")
@@ -51,6 +55,7 @@ public class PlayerController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Player p) throws IOException {
+        p.calculateCategory();
         MultipartFile image = p.getImage();
         if (!image.isEmpty()) {
             String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
@@ -60,6 +65,7 @@ public class PlayerController {
             System.out.println(p.getImagePath());
         }
         playerService.create(p);
+        assignToTeam(p);
         return "redirect:/player/list";
     }
 
@@ -121,6 +127,23 @@ public class PlayerController {
         return seasonService.findAll();
     }
 
+
+    private void assignToTeam(Player player) {
+        Season currentSeason = seasonService.getCurrentSeason();
+
+        List<Team> teams = teamService.findBySeasonAndCategoryAndGender(
+                currentSeason,
+                player.getCategory(),
+                player.getSex()
+        );
+
+        // If matching team exists, add player to it
+        if (!teams.isEmpty()) {
+            Team team = teams.get(0);
+            team.getPlayers().add(player);
+            teamService.create(team);
+        }
+    }
 
 
 }
