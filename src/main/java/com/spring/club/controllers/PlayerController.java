@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.spring.club.entities.Country;
@@ -47,9 +48,10 @@ public class PlayerController {
     @GetMapping("form")
     public String showForm(@ModelAttribute Player p, Model model) {
         List<Country> countries = countryService.findAll();
-        List<Season> seasons = seasonService.findAll();
         model.addAttribute("countries", countries);
-        model.addAttribute("seasons", seasons);
+        Season currentSeason = seasonService.getCurrentSeason();
+        p.setSeasons(Set.of(currentSeason));
+        model.addAttribute("currentSeason", currentSeason);
         return "players/formPlayer";
     }
 
@@ -109,7 +111,8 @@ public class PlayerController {
 
     @GetMapping("/filter")
     public String filterByCategory(@RequestParam("category") Category category, Model model, HttpServletRequest request) {
-        List<Player> filteredPlayers = playerService.findByCategory(category);
+        Long season_id = seasonService.getCurrentSeason().getId();
+        List<Player> filteredPlayers = playerService.findByCategoryAndSeason(season_id, category);
         model.addAttribute("players", filteredPlayers);
         model.addAttribute("currentURI", request.getRequestURI());
         return "players/showPlayers";
@@ -137,7 +140,6 @@ public class PlayerController {
                 player.getSex()
         );
 
-        // If matching team exists, add player to it
         if (!teams.isEmpty()) {
             Team team = teams.get(0);
             team.getPlayers().add(player);

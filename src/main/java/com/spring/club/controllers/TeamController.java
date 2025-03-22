@@ -47,8 +47,6 @@ public class TeamController {
         model.addAttribute("team", team);
         List<Coach> coaches = coachService.findAll();
         model.addAttribute("coaches", coaches);
-        List<Player> players = playerService.findAll();
-        model.addAttribute("players", players);
         return "teams/formTeam";
     }
 
@@ -80,11 +78,12 @@ public class TeamController {
 
     @GetMapping("edit")
     public String edit(@RequestParam("id") int id, Model model) {
+        Long season_id = seasonService.getCurrentSeason().getId();
         Team t = teamService.findById(id);
         model.addAttribute("team", t);
         List<Coach> coaches = coachService.findAll();
         model.addAttribute("coaches", coaches);
-        List<Player> players = playerService.findAll();
+        List<Player> players = playerService.findByCategoryAndGenderIntersection(season_id, t.getCategory(), t.getGender());
         model.addAttribute("players", players);
         return "teams/formTeam";
     }
