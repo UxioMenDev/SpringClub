@@ -96,16 +96,14 @@ public class PlayerController {
         MultipartFile image = p.getImage();
         if (image != null && !image.isEmpty()) {
             String fileName = image.getOriginalFilename();
-            Path path = Paths.get("src/main/resources/static/images/coach/" + fileName);
+            Path path = Paths.get("src/main/resources/static/images/player/" + fileName);
             Files.copy(image.getInputStream(), path);
-            p.setImagePath("/images/coach/" + fileName);
+            p.setImagePath("/images/player/" + fileName);
         }
         List<Country> countries = countryService.findAll();
-        List<Season> seasons = seasonService.findAll();
         model.addAttribute("countries", countries);
-        model.addAttribute("seasons", seasons);
         model.addAttribute("player", p);
-        model.addAttribute("player", p);
+        model.addAttribute("currentSeason", seasonService.getCurrentSeason());
         return "players/formPlayer";
     }
 
@@ -115,7 +113,15 @@ public class PlayerController {
         List<Player> filteredPlayers = playerService.findByCategoryAndSeason(season_id, category);
         model.addAttribute("players", filteredPlayers);
         model.addAttribute("currentURI", request.getRequestURI());
-        return "players/showPlayers";
+        return "players/kanbanPlayers";
+    }
+
+    @PostMapping("/renovate")
+    public String batchAction(@RequestParam(value = "selectedIds", required = false) List<Long> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            playerService.renovate(ids);
+        }
+        return "redirect:/player/list";
     }
 
     @InitBinder

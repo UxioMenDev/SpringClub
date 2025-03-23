@@ -1,5 +1,6 @@
 package com.spring.club.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,12 @@ import com.spring.club.repositories.PlayerRepository;
 public class PlayerServiceImpl implements PlayerService {
 
     private PlayerRepository playerRepository;
+    private SeasonService seasonService;
 
-    public PlayerServiceImpl(PlayerRepository playerRepository) {
+
+    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService) {
         this.playerRepository = playerRepository;
+        this.seasonService = seasonService;
     }
 
     @Override
@@ -57,6 +61,19 @@ public class PlayerServiceImpl implements PlayerService {
         return categoryPlayers.stream()
                 .filter(genderPlayers::contains)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void renovate(List<Long> ids) {
+        List<Player> playersToRenovate = new ArrayList<>();
+        for (Long id : ids) {
+            Player existingPlayer = playerRepository.findById(id.intValue())
+                    .orElseThrow(() -> new IllegalArgumentException("Player not found with id: " + id));
+            existingPlayer.getSeasons().add(seasonService.getCurrentSeason());
+            playersToRenovate.add(existingPlayer);
+        }
+
+        playerRepository.saveAll(playersToRenovate);
     }
 
 

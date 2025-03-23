@@ -13,5 +13,6 @@ public interface PlayerService {
     List<Player> findByCategoryAndSeason(Long season_id, Category category);
     List<Player> findByGenderAndSeason(Long season_id, Gender gender);
     List<Player> findByCategoryAndGenderIntersection(Long season_id, Category category, Gender gender);
+    void renovate(List<Long> ids);
 
 }
