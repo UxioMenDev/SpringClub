@@ -44,6 +44,11 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public List<Player> findBySeason(Long season_id) {
+        return playerRepository.findBySeasons_Id(season_id);
+    }
+
+    @Override
     public List<Player> findByCategoryAndSeason(Long season_id, Category category) {
         return playerRepository.findBySeasons_IdAndCategory(season_id, category);
     }

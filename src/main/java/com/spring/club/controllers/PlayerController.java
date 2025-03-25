@@ -72,10 +72,21 @@ public class PlayerController {
     }
 
     @GetMapping("list")
-    public String showPlayers(HttpServletRequest request, Model model) {
+    public String showPlayers(
+            @RequestParam(required = false) Long season,
+            HttpServletRequest request,
+            Model model) {
+
+        List<Player> players;
+        if (season != null) {
+            players = playerService.findBySeason(season);
+        } else {
+            players = playerService.findAll();
+        }
+
         model.addAttribute("currentURI", request.getRequestURI());
-        List<Player> players = playerService.findAll();
         model.addAttribute("players", players);
+        model.addAttribute("seasons", seasonService.findAll());
         return "players/showPlayers";
     }
 

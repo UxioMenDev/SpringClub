@@ -10,6 +10,7 @@ public interface PlayerService {
     List<Player> findAll();
     Player findById(int id);
     void delete(Player p);
+    List<Player> findBySeason(Long season_id);
     List<Player> findByCategoryAndSeason(Long season_id, Category category);
     List<Player> findByGenderAndSeason(Long season_id, Gender gender);
     List<Player> findByCategoryAndGenderIntersection(Long season_id, Category category, Gender gender);

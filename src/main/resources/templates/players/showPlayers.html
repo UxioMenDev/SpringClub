@@ -1,11 +1,23 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragments/base}">
 <div layout:fragment="content">
     <div class="container mb-3">
+
+
         <a href="/player/form">
             <button class="btn btn-info mb-3">Añadir jugador</button>
         </a>
+
+            <select class="form-select" style="width: auto;" onchange="window.location.href='/player/list?season=' + this.value">
+                <option value="">Todas las temporadas</option>
+                <option th:each="season : ${seasons}"
+                        th:value="${season.id}"
+                        th:text="${season.season}"
+                        th:selected="${param.season != null && param.season[0] == season.id.toString()}">
+                </option>
+            </select>
+
         <form th:action="@{/player/renovate}" method="post">
-            <table class="table table-striped">
+            <table class="table table-striped mt-3">
                 <thead class="table-dark text-center">
                 <tr>
                     <th>Selección</th>
