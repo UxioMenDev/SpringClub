@@ -2,6 +2,8 @@ package com.spring.club.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import com.spring.club.entities.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         Collection<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-        u.setRoles(roles);
+        u.getRoles().add(Role.ROLE_USER);
         userRepository.save(u);
     }
 
@@ -46,6 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getRoles());
+                user.getAuthorities());
+
     }
 }

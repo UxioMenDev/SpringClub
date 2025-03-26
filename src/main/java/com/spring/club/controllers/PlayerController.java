@@ -10,22 +10,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import com.spring.club.entities.Country;
-import com.spring.club.entities.Season;
-import com.spring.club.entities.Team;
+import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Category;
-import com.spring.club.services.CountryService;
-import com.spring.club.services.PlayerService;
-import com.spring.club.services.SeasonService;
-import com.spring.club.services.TeamService;
+import com.spring.club.entities.enums.Role;
+import com.spring.club.services.*;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.spring.club.entities.Player;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -37,12 +33,14 @@ public class PlayerController {
     private final CountryService countryService;
     private final SeasonService seasonService;
     private final TeamService teamService;
+    private final UserService userService;
 
-    public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService, TeamService teamService) {
+    public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService, TeamService teamService, UserService userService) {
         this.playerService = playerService;
         this.countryService = countryService;
         this.seasonService = seasonService;
         this.teamService = teamService;
+        this.userService = userService;
     }
 
     @GetMapping("form")
@@ -75,13 +73,20 @@ public class PlayerController {
     public String showPlayers(
             @RequestParam(required = false) Long season,
             HttpServletRequest request,
-            Model model) {
+            Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
         List<Player> players;
-        if (season != null) {
-            players = playerService.findBySeason(season);
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+
+        if (currentUser.getRoles().contains(Role.ROLE_USER)) {
+            players = season != null ?
+                    playerService.findByUserAndSeason(currentUser, season) :
+                    playerService.findByUser(currentUser);
         } else {
-            players = playerService.findAll();
+            players = season != null ?
+                    playerService.findBySeason(season) :
+                    playerService.findAll();
         }
 
         model.addAttribute("currentURI", request.getRequestURI());

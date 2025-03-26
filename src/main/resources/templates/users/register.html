@@ -40,15 +40,15 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="Password2" class="form-label"
-                    >Confirmar contraseña</label
-                    >
+                    <label for="Password2" class="form-label">Confirmar contraseña</label>
                     <input
                             type="password"
                             class="form-control"
                             id="passwd2"
                             required
+                            th:field="*{passwordConfirm}"
                     />
+                    <div class="text-danger" th:if="${passwordError}" th:text="${passwordError}"></div>
                 </div>
                 <button type="submit" class="btn btn-info w-100">Enviar</button>
             </form>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.spring.club.entities.Season;
+import com.spring.club.entities.User;
 import com.spring.club.entities.enums.Category;
 import com.spring.club.entities.enums.Gender;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,16 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         playerRepository.saveAll(playersToRenovate);
+    }
+
+    @Override
+    public List<Player> findByUser(User user) {
+        return playerRepository.findByUser(user);
+    }
+
+    @Override
+    public List<Player> findByUserAndSeason(User user, Long season_id) {
+        return playerRepository.findByUserAndSeasons_Id(user, season_id);
     }
 
 
