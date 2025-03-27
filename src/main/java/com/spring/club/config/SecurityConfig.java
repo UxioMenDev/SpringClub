@@ -25,10 +25,15 @@ public class SecurityConfig {
                     .requestMatchers("/coach/**").hasAnyRole("ADMIN", "COACH")
                     .anyRequest().authenticated())
 
+
             .formLogin(form -> form
                     .loginPage("/login")
-                    .defaultSuccessUrl("/teams/list", true)
-                    .permitAll());
+                    .defaultSuccessUrl("/player/list", true)
+                    .permitAll())
+            .logout(logout -> logout
+                  .logoutUrl("/logout")
+                  .logoutSuccessUrl("/login")
+                  .permitAll());
 
     return http.build();
   }

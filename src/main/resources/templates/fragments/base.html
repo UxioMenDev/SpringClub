@@ -1,5 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,26 +16,20 @@
 </head>
 
 <body>
+
 <nav class="navbar navbar-expand-lg bg-info mb-5">
   <div class="container-fluid">
-    <a class="navbar-brand " >SpringClub</a>
-    <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon "></span>
+    <a class="navbar-brand">SpringClub</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" th:classappend="${currentURI == '/teams/list'} ? 'active'" aria-current="page" href="/teams/list">Equipos</a>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_COACH')">
+          <a class="nav-link" th:classappend="${currentURI == '/teams/list'} ? 'active'" href="/teams/list">Equipos</a>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_COACH')">
           <a class="nav-link dropdown-toggle" href="#" id="seasonsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Temporadas
           </a>
@@ -43,8 +39,7 @@
             </li>
           </ul>
         </li>
-        <li class="nav-item">
-        <li class="nav-item dropdown" >
+        <li class="nav-item dropdown" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_COACH')">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Categorías
           </a>
@@ -54,12 +49,15 @@
             </li>
           </ul>
         </li>
-          <a class="nav-link" th:classappend="${currentURI == '/player/list'} ? 'active'" aria-current="page" href="/player/list">Jugadores</a>
-        </li>
         <li class="nav-item">
-          <a class="nav-link" th:classappend="${currentURI == '/coach/list'} ? 'active'" aria-current="page" href="/coach/list">Entrenadores</a>
+          <a class="nav-link" th:classappend="${currentURI == '/player/list'} ? 'active'" href="/player/list">Jugadores</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+          <a class="nav-link" th:classappend="${currentURI == '/coach/list'} ? 'active'" href="/coach/list">Entrenadores</a>
         </li>
       </ul>
+      <form th:action="@{/logout}" method="post" class="d-flex">
+        <button class="btn btn-light" type="submit">Cerrar sesión</button>
       </form>
     </div>
   </div>
