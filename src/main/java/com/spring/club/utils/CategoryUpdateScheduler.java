@@ -21,6 +21,6 @@ public class CategoryUpdateScheduler {
         List<Player> players = playerService.findAll();
         for (Player player : players) {
             player.calculateCategory();
-            playerService.create(player);
+            playerService.update(player);
         }
     }}

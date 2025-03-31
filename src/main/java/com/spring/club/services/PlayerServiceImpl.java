@@ -17,16 +17,25 @@ public class PlayerServiceImpl implements PlayerService {
 
     private PlayerRepository playerRepository;
     private SeasonService seasonService;
+    private UserService userService;
 
 
-    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService, UserService userService) {
         this.playerRepository = playerRepository;
         this.seasonService = seasonService;
+        this.userService = userService;
     }
 
     @Override
-    public void create(Player p) {
+    public void create(Player p, String username) {
+        User currentUser = userService.findByUsername(username);
+        p.setUser(currentUser);
         playerRepository.save(p);
+    }
+
+    @Override
+    public void update(Player player) {
+        playerRepository.save(player);
     }
 
     @Override

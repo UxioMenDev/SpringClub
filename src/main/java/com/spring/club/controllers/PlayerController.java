@@ -54,7 +54,7 @@ public class PlayerController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Player p) throws IOException {
+    public String create(@ModelAttribute Player p, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         p.calculateCategory();
         MultipartFile image = p.getImage();
         if (!image.isEmpty()) {
@@ -62,9 +62,9 @@ public class PlayerController {
             Path path = Paths.get("src/main/resources/static/images/player/" + fileName);
             Files.copy(image.getInputStream(), path);
             p.setImagePath("/images/player/" + fileName);
-            System.out.println(p.getImagePath());
         }
-        playerService.create(p);
+
+        playerService.create(p, userDetails.getUsername());
         assignToTeam(p);
         return "redirect:/player/list";
     }
@@ -78,8 +78,10 @@ public class PlayerController {
 
         List<Player> players;
         User currentUser = userService.findByUsername(userDetails.getUsername());
+        boolean isAdminOrCoach = currentUser.getRoles().contains(Role.ROLE_ADMIN) ||
+                currentUser.getRoles().contains(Role.ROLE_COACH);
 
-        if (currentUser.getRoles().contains(Role.ROLE_USER)) {
+        if (!isAdminOrCoach) {
             players = season != null ?
                     playerService.findByUserAndSeason(currentUser, season) :
                     playerService.findByUser(currentUser);
