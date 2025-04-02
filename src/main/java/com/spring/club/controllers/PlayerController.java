@@ -44,12 +44,20 @@ public class PlayerController {
     }
 
     @GetMapping("form")
-    public String showForm(@ModelAttribute Player p, Model model) {
+    public String showForm(@ModelAttribute Player p, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         List<Country> countries = countryService.findAll();
         model.addAttribute("countries", countries);
         Season currentSeason = seasonService.getCurrentSeason();
         p.setSeasons(Set.of(currentSeason));
         model.addAttribute("currentSeason", currentSeason);
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        boolean isAdmin = currentUser.getRoles().contains(Role.ROLE_ADMIN);
+
+        if (isAdmin) {
+            List<User> users = userService.findAll();
+            model.addAttribute("users", users);
+        }
+        model.addAttribute("isAdmin", isAdmin);
         return "players/formPlayer";
     }
 
@@ -63,8 +71,12 @@ public class PlayerController {
             Files.copy(image.getInputStream(), path);
             p.setImagePath("/images/player/" + fileName);
         }
-
-        playerService.create(p, userDetails.getUsername());
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        if (!currentUser.getRoles().contains(Role.ROLE_ADMIN)) {
+            playerService.create(p, userDetails.getUsername());
+        } else {
+            playerService.create(p, userService.findByUsername(p.getUser().getUsername()).toString());
+        }
         assignToTeam(p);
         return "redirect:/player/list";
     }

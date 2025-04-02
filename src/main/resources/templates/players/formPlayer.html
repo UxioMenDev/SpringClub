@@ -5,6 +5,17 @@
         <h1>Formulario de jugador</h1>
         <form method="post" th:action="@{/player/create}" th:object="${player}" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}" />
+
+            <div class="mb-3" th:if="${isAdmin}">
+                <label for="user" class="form-label">Usuario asignado</label>
+                <select class="form-control" id="user" th:field="*{user}" required>
+                    <option value="">Seleccione un usuario</option>
+                    <option th:each="user : ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.username}"></option>
+                </select>
+            </div>
+
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="nombre" placeholder="Nombre del jugador" th:field="*{name}" />

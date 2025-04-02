@@ -2,6 +2,7 @@ package com.spring.club.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.spring.club.entities.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,5 +51,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.getPassword(),
                 user.getAuthorities());
 
+    }
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }
