@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.spring.club.entities.PlayerSeason;
 import com.spring.club.entities.Season;
 import com.spring.club.entities.User;
 import com.spring.club.entities.enums.Category;
@@ -18,19 +19,23 @@ public class PlayerServiceImpl implements PlayerService {
     private PlayerRepository playerRepository;
     private SeasonService seasonService;
     private UserService userService;
+    private  PlayerSeasonService playerSeasonService;
 
 
-    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService, UserService userService) {
+
+    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService, UserService userService, PlayerSeasonService playerSeasonService) {
         this.playerRepository = playerRepository;
         this.seasonService = seasonService;
         this.userService = userService;
+        this.playerSeasonService = playerSeasonService;
     }
 
     @Override
-    public void create(Player p, String username) {
+    public void create(Player p, String username, boolean paid) {
         User currentUser = userService.findByUsername(username);
         p.setUser(currentUser);
-        playerRepository.save(p);
+        Player savedPlayer = playerRepository.save(p);
+        playerSeasonService.create(savedPlayer, seasonService.getCurrentSeason(), paid);
     }
 
     @Override
@@ -54,18 +59,17 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> findBySeason(Long season_id) {
-        return playerRepository.findBySeasons_Id(season_id);
+    public List<Player> findBySeason(Long seasonId) {
+        return playerRepository.findByPlayerSeasons_Season_Id(seasonId);
+    }
+    @Override
+    public List<Player> findByCategoryAndSeason(Long seasonId, Category category) {
+        return playerRepository.findByPlayerSeasons_Season_IdAndCategory(seasonId, category);
     }
 
     @Override
-    public List<Player> findByCategoryAndSeason(Long season_id, Category category) {
-        return playerRepository.findBySeasons_IdAndCategory(season_id, category);
-    }
-
-    @Override
-    public List<Player> findByGenderAndSeason(Long season_id,Gender gender) {
-        return playerRepository.findBySeasons_IdAndSex(season_id, gender);
+    public List<Player> findByGenderAndSeason(Long seasonId, Gender gender) {
+        return playerRepository.findByPlayerSeasons_Season_IdAndSex(seasonId, gender);
     }
 
     @Override
@@ -80,15 +84,13 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void renovate(List<Long> ids) {
-        List<Player> playersToRenovate = new ArrayList<>();
+        Season currentSeason = seasonService.getCurrentSeason();
         for (Long id : ids) {
-            Player existingPlayer = playerRepository.findById(id.intValue())
+            Player player = playerRepository.findById(id.intValue())
                     .orElseThrow(() -> new IllegalArgumentException("Player not found with id: " + id));
-            existingPlayer.getSeasons().add(seasonService.getCurrentSeason());
-            playersToRenovate.add(existingPlayer);
+            playerSeasonService.create(player, currentSeason, false);
         }
 
-        playerRepository.saveAll(playersToRenovate);
     }
 
     @Override
@@ -97,8 +99,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> findByUserAndSeason(User user, Long season_id) {
-        return playerRepository.findByUserAndSeasons_Id(user, season_id);
+    public List<Player> findByUserAndSeason(User user, Long seasonId) {
+        return playerRepository.findByUserAndPlayerSeasons_Season_Id(user, seasonId);
     }
 
 

@@ -48,8 +48,9 @@ public class PlayerController {
         List<Country> countries = countryService.findAll();
         model.addAttribute("countries", countries);
         Season currentSeason = seasonService.getCurrentSeason();
-        p.setSeasons(Set.of(currentSeason));
         model.addAttribute("currentSeason", currentSeason);
+        model.addAttribute("paid", false);
+
         User currentUser = userService.findByUsername(userDetails.getUsername());
         boolean isAdmin = currentUser.getRoles().contains(Role.ROLE_ADMIN);
 
@@ -62,7 +63,7 @@ public class PlayerController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Player p, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
+    public String create(@ModelAttribute Player p, @RequestParam(defaultValue = "false") boolean paid, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         p.calculateCategory();
         MultipartFile image = p.getImage();
         if (!image.isEmpty()) {
@@ -73,9 +74,9 @@ public class PlayerController {
         }
         User currentUser = userService.findByUsername(userDetails.getUsername());
         if (!currentUser.getRoles().contains(Role.ROLE_ADMIN)) {
-            playerService.create(p, userDetails.getUsername());
+            playerService.create(p, userDetails.getUsername(), paid);
         } else {
-            playerService.create(p, userService.findByUsername(p.getUser().getUsername()).toString());
+            playerService.create(p, p.getUser().getUsername(), paid);
         }
         assignToTeam(p);
         return "redirect:/player/list";
@@ -121,7 +122,7 @@ public class PlayerController {
     }
 
     @GetMapping("edit")
-    public String edit(@RequestParam("id") int id, Model model) throws IOException {
+    public String edit(@RequestParam("id") int id, Model model, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         Player p = playerService.findById(id);
         MultipartFile image = p.getImage();
         if (image != null && !image.isEmpty()) {
@@ -131,9 +132,16 @@ public class PlayerController {
             p.setImagePath("/images/player/" + fileName);
         }
         List<Country> countries = countryService.findAll();
+        List<User> users = userService.findAll();
         model.addAttribute("countries", countries);
+        model.addAttribute("users", users);
         model.addAttribute("player", p);
         model.addAttribute("currentSeason", seasonService.getCurrentSeason());
+
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        boolean isAdmin = currentUser.getRoles().contains(Role.ROLE_ADMIN);
+        model.addAttribute("isAdmin", isAdmin);
+
         return "players/formPlayer";
     }
 

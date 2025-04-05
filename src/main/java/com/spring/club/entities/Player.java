@@ -2,6 +2,7 @@ package com.spring.club.entities;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.spring.club.entities.enums.Gender;
@@ -62,13 +63,8 @@ public class Player {
     private User user;
     @Enumerated(EnumType.STRING)
     private Category category;
-    @ManyToMany
-    @JoinTable(
-            name = "player_season",
-            joinColumns = @JoinColumn(name = "player_id"),
-            inverseJoinColumns = @JoinColumn(name = "season_id")
-    )
-    private Set<Season> seasons;
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private Set<PlayerSeason> playerSeasons = new HashSet<>();
     @Column(name = "license_number")
     private String licenseNumber;
 

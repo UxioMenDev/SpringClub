@@ -7,7 +7,7 @@ import com.spring.club.entities.enums.Category;
 import com.spring.club.entities.enums.Gender;
 
 public interface PlayerService {
-    void create(Player p, String username);
+    void create(Player p, String username, boolean paid);
     void update(Player player);
     List<Player> findAll();
     Player findById(int id);

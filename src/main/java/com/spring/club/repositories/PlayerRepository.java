@@ -15,10 +15,10 @@ import com.spring.club.entities.Player;
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
     public List<Player> findAll();
     Optional<Player> findById(int id);
-    List<Player> findBySeasons_Id(Long seasonId);
-    List<Player> findBySeasons_IdAndCategory(Long seasonId, Category category);
-    List<Player> findBySeasons_IdAndSex(Long seasonId, Gender gender);
+    List<Player> findByPlayerSeasons_Season_Id(Long seasonId);
+    List<Player> findByPlayerSeasons_Season_IdAndCategory(Long seasonId, Category category);
+    List<Player> findByPlayerSeasons_Season_IdAndSex(Long seasonId, Gender gender);
     List<Player> findByUser(User user);
-    List<Player> findByUserAndSeasons_Id(User user, Long seasonId);
+    List<Player> findByUserAndPlayerSeasons_Season_Id(User user, Long seasonId);
 
 }
