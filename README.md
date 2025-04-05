@@ -22,7 +22,7 @@ A Spring Boot web app for managing sport clubs
 - Maven
 - MySQL
 
-### Installation
+### Installation and usage
 
 1. Clone the repository:
 
@@ -40,4 +40,7 @@ A Spring Boot web app for managing sport clubs
    ```sh
    ./mvnw spring-boot:run
    ```
+4. Log in with default administrator credentials:
+   - username: admin@admin
+   - password: admin
 
