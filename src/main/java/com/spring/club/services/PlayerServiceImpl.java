@@ -34,8 +34,11 @@ public class PlayerServiceImpl implements PlayerService {
     public void create(Player p, String username, boolean paid) {
         User currentUser = userService.findByUsername(username);
         p.setUser(currentUser);
+        boolean isNewPlayer = p.getId() == 0;
         Player savedPlayer = playerRepository.save(p);
-        playerSeasonService.create(savedPlayer, seasonService.getCurrentSeason(), paid);
+        if (isNewPlayer) {
+            playerSeasonService.create(savedPlayer, seasonService.getCurrentSeason(), paid);
+        }
     }
 
     @Override
