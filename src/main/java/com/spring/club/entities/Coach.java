@@ -25,7 +25,5 @@ public class Coach {
     private String name;
     @ManyToMany(mappedBy = "coach")
     private Set<Team> teams;
-    @Transient
-    private MultipartFile image;
-    private String imagePath;
+
 }

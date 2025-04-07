@@ -6,12 +6,12 @@
         </a>
         <div class="row d-flex mb-3">
             <div th:each="coach : ${coaches}" class="card me-3">
-                <img th:src="@{${coach.imagePath}}" class="card-img-top" alt="..." />
                 <div class="card-body">
                     <p class="card-text" th:text="${coach.name}"></p>
-                    <ul class="list-group list-group-flush" th:each="team : ${coach.teams}">
-                        <li class="list-group-item" th:text="${team.title}"></li>
-                    </ul>
+                    <div class="row" th:each="team : ${coach.teams}">
+                        <div class="col" th:text="${team.category}"></div>
+                        <div class="col" th:text="${team.gender}"></div>
+                    </div>
                     <a th:href="@{/coach/edit(id=${coach.id})}">
                         <button class="btn btn-info">Editar</button>
                     </a>

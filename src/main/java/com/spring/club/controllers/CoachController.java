@@ -43,13 +43,6 @@ public class CoachController {
 
     @PostMapping("create")
     public String create(@ModelAttribute Coach c) throws IOException {
-        MultipartFile image = c.getImage();
-        if (!image.isEmpty()) {
-            String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-            Path path = Paths.get("src/main/resources/static/images/coach/" + fileName);
-            Files.copy(image.getInputStream(), path);
-            c.setImagePath("/images/coach/" + fileName);
-        }
         coachService.create(c);
         return "redirect:/coach/list";
     }
@@ -76,13 +69,6 @@ public class CoachController {
     @GetMapping("edit")
     public String edit(@RequestParam("id") int id, Model model) throws IOException {
         Coach c = coachService.findById(id);
-        MultipartFile image = c.getImage();
-        if (image != null && !image.isEmpty()) {
-            String fileName = image.getOriginalFilename();
-            Path path = Paths.get("src/main/resources/static/images/coach/" + fileName);
-            Files.copy(image.getInputStream(), path);
-            c.setImagePath("/images/coach/" + fileName);
-        }
         model.addAttribute("coach", c);
         return "coaches/formCoach";
     }
