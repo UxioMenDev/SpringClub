@@ -51,15 +51,22 @@ public class TeamController {
     }
 
     @PostMapping("create")
-    public String create(@ModelAttribute Team t, RedirectAttributes redirectAttributes) {
+    public String create(@ModelAttribute Team t, Model model) {
         try {
             teamService.create(t);
             return "redirect:/teams/list";
         } catch (IllegalStateException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/teams/form";
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("team", t);
+            model.addAttribute("coaches", coachService.findAll());
+            Long season_id = seasonService.getCurrentSeason().getId();
+            List<Player> players = playerService.findByCategoryAndGenderIntersection(season_id, t.getCategory(), t.getGender());
+            model.addAttribute("players", players);
+            return "teams/formTeam";
         }
     }
+
+
 
     @GetMapping("list")
     public String showTeams(HttpServletRequest request, Model model) {

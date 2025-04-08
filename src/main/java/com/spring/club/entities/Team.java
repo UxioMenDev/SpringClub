@@ -31,7 +31,7 @@ public class Team {
     private Coach coach;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "team_player",
+            name = "player_team",
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id")
     )

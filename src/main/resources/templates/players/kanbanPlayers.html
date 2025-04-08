@@ -20,13 +20,17 @@
 
                     <h6>Temporadas:</h6>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" th:each="season : ${player.playerSeasons}" th:text="${season.season}"></li>
+                        <li class="list-group-item" th:each="playerSeason : ${player.playerSeasons}"
+                            th:text="${playerSeason.season.season}"></li>
                     </ul>
 
                     <h6 class="mt-2">Equipos:</h6>
-                    <ul class="list-group list-group-flush" th:each="team : ${player.teams}">
-                        <li class="list-group-item" th:text="${team.title}"></li>
-                    </ul>
+                    <div class="list-group mt-2">
+                        <div class="list-group-item d-flex justify-content-between align-items-center" th:each="team : ${player.teams}">
+                            <span th:text="${team.category}"></span>
+                            <span th:text="${team.gender}"></span>
+                        </div>
+                    </div>
                 </div>
                 </a>
             </div>
