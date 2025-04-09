@@ -2,6 +2,12 @@
 ## Description
 A Spring Boot web app for managing sport clubs
 
+- Spring Security authentication
+- Create players and coaches and relate them to teams
+- Creates Seasons automatically
+- Automatically asigns players to teams based on their age and gender
+- Filter teams by season and players by age
+
 ## Technologies
 
 - Java 21
