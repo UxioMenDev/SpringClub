@@ -5,11 +5,12 @@ import com.spring.club.entities.PlayerSeason;
 import com.spring.club.entities.Season;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlayerSeasonService {
     void create(Player player, Season season, boolean paid);
-    boolean isPlayerPaidForSeason(Player player, Season season);
+    Optional findByPlayerAndSeason(Player player, Season season);
     List<PlayerSeason> findByPlayer(Player player);
     List<PlayerSeason> findBySeason(Season season);
-    void updatePaymentStatus(Player player, Season season, boolean paid);
+    void updatePayment(PlayerSeason playerSeasonseason);
 }

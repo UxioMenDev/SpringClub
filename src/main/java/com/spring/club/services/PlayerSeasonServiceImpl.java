@@ -7,6 +7,7 @@ import com.spring.club.repositories.PlayerSeasonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerSeasonServiceImpl implements PlayerSeasonService {
@@ -27,10 +28,8 @@ public class PlayerSeasonServiceImpl implements PlayerSeasonService {
     }
 
     @Override
-    public boolean isPlayerPaidForSeason(Player player, Season season) {
-        return playerSeasonRepository.findByPlayerAndSeason(player, season)
-                .map(PlayerSeason::isPaid)
-                .orElse(false);
+    public Optional findByPlayerAndSeason(Player player, Season season) {
+        return playerSeasonRepository.findByPlayerAndSeason(player, season);
     }
 
     @Override
@@ -44,10 +43,8 @@ public class PlayerSeasonServiceImpl implements PlayerSeasonService {
     }
 
     @Override
-    public void updatePaymentStatus(Player player, Season season, boolean paid) {
-        PlayerSeason playerSeason = playerSeasonRepository.findByPlayerAndSeason(player, season)
-                .orElseThrow(() -> new IllegalStateException("PlayerSeason not found"));
-        playerSeason.setPaid(paid);
+    public void updatePayment(PlayerSeason playerSeason) {
+        playerSeason.setPaid(true);
         playerSeasonRepository.save(playerSeason);
     }
 }
