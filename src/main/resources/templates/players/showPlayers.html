@@ -14,7 +14,6 @@
             </option>
         </select>
 
-        <form th:action="@{/player/renovate}" method="post">
             <table class="table table-striped mt-3">
                 <thead class="table-dark text-center">
                 <tr>
@@ -23,11 +22,10 @@
                     <th>Categoría</th>
                     <th>Género</th>
                     <th>Pagado</th>
-                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="player : ${players}" class="text-center">
+                <tr th:each="player : ${players}" class="text-center player" th:data-href="@{/player/edit(id=${player.id})}" >
                     <td>
                         <input type="checkbox" name="selectedIds" th:value="${player.id}" />
                     </td>
@@ -37,13 +35,10 @@
                     <td>
                         <input type="checkbox" th:checked="${player.playerSeasons.?[paid].size() > 0}" disabled />
                     </td>
-                    <td>
-                        <a th:href="@{/player/edit(id=${player.id})}" class="btn btn-info">Editar</a>
-                    </td>
                 </tr>
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-info">Renovar seleccionados</button>
+            <button class="btn btn-info renovate">Renovar seleccionados</button>
         </form>
     </div>
 </div>

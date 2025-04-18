@@ -4,8 +4,9 @@
         <a href="/coach/form">
             <button class="btn btn-info mb-3">Añadir entrenador</button>
         </a>
+
         <div class="row d-flex mb-3">
-            <div th:each="coach : ${coaches}" class="card me-3">
+            <div th:each="coach : ${coaches}" class="card me-3 coach" th:data-href="@{/coach/edit(id=${coach.id})}">
                 <div class="card-body">
                     <p class="card-text" th:text="${coach.name}"></p>
                     <div class="list-group mt-2">
@@ -14,9 +15,6 @@
                             <span th:text="${team.gender}"></span>
                         </div>
                     </div>
-                    <a th:href="@{/coach/edit(id=${coach.id})}">
-                        <button class="btn btn-info mt-3">Editar</button>
-                    </a>
                 </div>
             </div>
         </div>
