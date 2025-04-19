@@ -1,4 +1,17 @@
 # SpringClub
+
+[![Java](https://img.shields.io/badge/Java-21-red?logo=java&logoColor=white)](https://www.java.com/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.1-6DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
+[![JPA](https://img.shields.io/badge/JPA-3.1-orange?logo=hibernate&logoColor=white)](https://jakarta.ee/specifications/persistence/)
+[![Hibernate](https://img.shields.io/badge/Hibernate-6.4-59666C?logo=hibernate&logoColor=white)](https://hibernate.org/)[![Spring Security](https://img.shields.io/badge/Spring_Security-6.2-6DB33F?logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
+[![Lombok](https://img.shields.io/badge/Lombok-1.18-red?logo=lombok&logoColor=white)](https://projectlombok.org/)
+[![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.2-005F0F?logo=thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Maven](https://img.shields.io/badge/Maven-3.9-C71A36?logo=apache-maven&logoColor=white)](https://maven.apache.org/)
+[![jQuery](https://img.shields.io/badge/jQuery-3.7.1-0769AD?logo=jquery&logoColor=white)](https://jquery.com/)
+[![Docker](https://img.shields.io/badge/Docker-24.0.9-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+
 ## Description
 A Spring Boot web app for managing sport clubs
 
@@ -10,28 +23,22 @@ A Spring Boot web app for managing sport clubs
 - Filter teams by season and players by age
 - PayPal integration
 
-## Technologies
 
-- Java 21
-- Spring Boot 3.4.1
-- JPA
-- Spring Security
-- Lombok
-- Thymeleaf
-- Bootstrap 5.3.3
-- MySQL
-- Maven
-- jQuery 3.7.1
+## Prerrequisites
 
-## Configuration
-
-### Prerrequisites
+### 🖥️ Local
 
 - Java 21
 - Maven
 - MySQL
 
-### Installation and usage
+## 🐳 Docker
+
+- Docker
+- Docker Compose
+
+## Usage
+
 
 1. Clone the repository:
 
@@ -39,19 +46,41 @@ A Spring Boot web app for managing sport clubs
    git clone https://github.com/UxioMenDev/SpringClub.git
    ```
 
-2. Create database:
+### 🖥️ Local
+
+1. Create database:
 
    ```mysql
    create database if not exists spring_club;
    ```
 
-3. Compile and execute:
+2. Compile and execute:
    ```sh
    ./mvnw spring-boot:run
    ```
-4. Log in with default administrator credentials:
-   - username: admin@admin
-   - password: admin
+   
+## 🐳 Docker
+
+1. Build the Docker image:
+     ```
+     docker compose build
+     ```
+2. Start the services:
+     ```
+     docker compose up
+     ```
+
+Log in with default administrator credentials:
+
+  username:
+  ````
+  admin@admin
+  ````
+   password:
+   ````
+  admin
+   ````
+
 
 ## Images
 ![image](https://github.com/user-attachments/assets/9b79800c-48ab-4137-9e3c-1b03059175af)
