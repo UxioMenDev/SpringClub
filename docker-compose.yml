@@ -7,34 +7,36 @@ services:
       db:
         condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/spring_club
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/spring_club
       - SPRING_DATASOURCE_USERNAME=springuser
       - SPRING_DATASOURCE_PASSWORD=springpass
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   db:
-    image: mysql:8.0
+    image: postgres:15
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      - MYSQL_DATABASE=spring_club
-      - MYSQL_USER=springuser
-      - MYSQL_PASSWORD=springpass
-      - MYSQL_ROOT_PASSWORD=root
+      - POSTGRES_DB=spring_club
+      - POSTGRES_USER=springuser
+      - POSTGRES_PASSWORD=springpass
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U springuser -d spring_club"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  adminer:
-    image: adminer
+  pgweb:
+    image: sosedoff/pgweb
     ports:
-      - "8081:8080"
+      - "8081:8081"
     depends_on:
       - db
+    environment:
+      - PGWEB_DATABASE_URL=postgres://springuser:springpass@db:5432/spring_club?sslmode=disable
+    command: pgweb --bind=0.0.0.0 --listen=8081
 
 volumes:
-  mysql_data:
+  postgres_data:

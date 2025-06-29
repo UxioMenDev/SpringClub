@@ -3,11 +3,12 @@
 [![Java](https://img.shields.io/badge/Java-21-red?logo=java&logoColor=white)](https://www.java.com/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.1-6DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-boot)
 [![JPA](https://img.shields.io/badge/JPA-3.1-orange?logo=hibernate&logoColor=white)](https://jakarta.ee/specifications/persistence/)
-[![Hibernate](https://img.shields.io/badge/Hibernate-6.4-59666C?logo=hibernate&logoColor=white)](https://hibernate.org/)[![Spring Security](https://img.shields.io/badge/Spring_Security-6.2-6DB33F?logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
+[![Hibernate](https://img.shields.io/badge/Hibernate-6.4-59666C?logo=hibernate&logoColor=white)](https://hibernate.org/)
+[![Spring Security](https://img.shields.io/badge/Spring_Security-6.2-6DB33F?logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
 [![Lombok](https://img.shields.io/badge/Lombok-1.18-red?logo=lombok&logoColor=white)](https://projectlombok.org/)
 [![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.2-005F0F?logo=thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Maven](https://img.shields.io/badge/Maven-3.9-C71A36?logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 [![jQuery](https://img.shields.io/badge/jQuery-3.7.1-0769AD?logo=jquery&logoColor=white)](https://jquery.com/)
 [![Docker](https://img.shields.io/badge/Docker-24.0.9-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
@@ -30,7 +31,7 @@ A Spring Boot web app for managing sport clubs
 
 - Java 21
 - Maven
-- MySQL
+- PostgreSQL
 
 ## 🐳 Docker
 

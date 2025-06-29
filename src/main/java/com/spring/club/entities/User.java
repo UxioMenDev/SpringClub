@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
