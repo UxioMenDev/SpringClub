@@ -14,6 +14,7 @@ import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Category;
 import com.spring.club.entities.enums.Role;
 import com.spring.club.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,9 @@ public class PlayerController {
     private final SeasonService seasonService;
     private final TeamService teamService;
     private final UserService userService;
+
+    @Autowired
+    private S3Service s3Service;
 
     public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService, TeamService teamService, UserService userService) {
         this.playerService = playerService;
@@ -62,16 +66,23 @@ public class PlayerController {
         return "players/formPlayer";
     }
 
+
     @PostMapping("/create")
     public String create(@ModelAttribute Player p, @RequestParam(defaultValue = "false") boolean paid, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         p.calculateCategory();
         MultipartFile image = p.getImage();
+
         if (!image.isEmpty()) {
-            String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-            Path path = Paths.get("src/main/resources/static/images/player/" + fileName);
-            Files.copy(image.getInputStream(), path);
-            p.setImagePath("/images/player/" + fileName);
+            try {
+                String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+                String s3Key = s3Service.uploadFile("players/" + fileName, image.getBytes());
+                p.setImagePath(s3Key);
+            } catch (Exception e) {
+                System.err.println("Error subiendo a S3: " + e.getMessage());
+                p.setImagePath(null);
+            }
         }
+
         User currentUser = userService.findByUsername(userDetails.getUsername());
         if (!currentUser.getRoles().contains(Role.ROLE_ADMIN)) {
             playerService.create(p, userDetails.getUsername(), paid);
@@ -122,15 +133,9 @@ public class PlayerController {
     }
 
     @GetMapping("edit")
-    public String edit(@RequestParam("id") int id, Model model, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
+    public String edit(@RequestParam("id") int id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Player p = playerService.findById(id);
-        MultipartFile image = p.getImage();
-        if (image != null && !image.isEmpty()) {
-            String fileName = image.getOriginalFilename();
-            Path path = Paths.get("src/main/resources/static/images/player/" + fileName);
-            Files.copy(image.getInputStream(), path);
-            p.setImagePath("/images/player/" + fileName);
-        }
+
         List<Country> countries = countryService.findAll();
         List<User> users = userService.findAll();
         model.addAttribute("countries", countries);
@@ -144,6 +149,7 @@ public class PlayerController {
 
         return "players/formPlayer";
     }
+
 
     @GetMapping("/filter")
     public String filterByCategory(@RequestParam("category") Category category, Model model, HttpServletRequest request) {
