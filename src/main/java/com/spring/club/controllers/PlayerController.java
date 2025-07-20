@@ -37,7 +37,7 @@ public class PlayerController {
     private final UserService userService;
 
     @Autowired
-    private S3Service s3Service;
+    private StorageService storageService;
 
     public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService, TeamService teamService, UserService userService) {
         this.playerService = playerService;
@@ -75,10 +75,10 @@ public class PlayerController {
         if (!image.isEmpty()) {
             try {
                 String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-                String s3Key = s3Service.uploadFile("players/" + fileName, image.getBytes());
-                p.setImagePath(s3Key);
+                String fileUrl = storageService.uploadFile("players/" + fileName, image.getBytes());
+                p.setImagePath(fileUrl);
             } catch (Exception e) {
-                System.err.println("Error subiendo a S3: " + e.getMessage());
+                System.err.println("Error subiendo archivo al almacenamiento: " + e.getMessage());
                 p.setImagePath(null);
             }
         }

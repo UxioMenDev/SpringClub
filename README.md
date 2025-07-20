@@ -82,6 +82,30 @@ Log in with default administrator credentials:
   admin
    ````
 
+## 🌥️ Supported Cloud Providers
+
+### AWS S3
+- **Service**: Amazon S3
+- **Bucket**
+- **Features**: Standard S3 storage
+
+### Azure Blob Storage
+- **Service**: Azure Blob Storage
+- **Features**: SAS tokens for secure access
+
+## 🔐 Security
+
+### AWS S3
+- Uses bucket policies for access control
+- Public read access for media files
+- IAM roles for secure access
+
+### Azure Blob Storage
+- Uses SAS tokens for secure access
+- **No public access required**
+- Time-limited URLs (1 hour default)
+- Automatic token regeneration
+
 
 ## Images
 ![image](https://github.com/user-attachments/assets/9b79800c-48ab-4137-9e3c-1b03059175af)
