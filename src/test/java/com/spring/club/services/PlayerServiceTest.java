@@ -4,7 +4,6 @@ package com.spring.club.services;
 import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Gender;
 import com.spring.club.entities.enums.Role;
-import com.spring.club.repositories.CountryRepository;
 import com.spring.club.repositories.PlayerRepository;
 import com.spring.club.repositories.SeasonRepository;
 import com.spring.club.repositories.UserRepository;
@@ -23,17 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PlayerServiceTest {
 
     @Autowired private PlayerRepository playerRepository;
-    @Autowired private CountryRepository countryRepository;
     @Autowired private UserRepository userRepository;
 
 
     @Test
     @DirtiesContext
     void testCreatePlayer() {
-        Country country = new Country();
-        country.setName("Suiza");
-        country = countryRepository.save(country);
-
         User user = new User();
         user.setUsername("usuario");
         user.setRoles(Set.of(Role.ROLE_USER));
@@ -49,7 +43,7 @@ class PlayerServiceTest {
         player.setStreet("Calle Mayor 1");
         player.setZip(28001);
         player.setPlaceOfBirth("Madrid");
-        player.setCountry(country);
+        player.setCountry("Suiza"); // Ahora es String
         player.setUser(user);
 
         player = playerRepository.save(player);

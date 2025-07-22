@@ -2,11 +2,9 @@ package com.spring.club.services;
 
 import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Gender;
-import com.spring.club.repositories.CountryRepository;
 import com.spring.club.repositories.PlayerRepository;
 import com.spring.club.repositories.PlayerSeasonRepository;
 import com.spring.club.repositories.SeasonRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,17 +19,12 @@ class PlayerSeasonServiceTest {
 
     @Autowired private PlayerSeasonRepository playerSeasonRepository;
     @Autowired private PlayerRepository playerRepository;
-    @Autowired private CountryRepository countryRepository;
     @Autowired private SeasonRepository seasonRepository;
 
 
     @Test
     @DirtiesContext
     void testCreatePlayerSeason() {
-        Country country = new Country();
-        country.setName("Alemania");
-        country = countryRepository.save(country);
-
         Player player = new Player();
         player.setName("Juan");
         player.setBirthdate(new Date());
@@ -42,7 +35,7 @@ class PlayerSeasonServiceTest {
         player.setStreet("Calle Mayor 1");
         player.setZip(28001);
         player.setPlaceOfBirth("Madrid");
-        player.setCountry(country);
+        player.setCountry("España");
         player = playerRepository.save(player);
 
         Season season = new Season();

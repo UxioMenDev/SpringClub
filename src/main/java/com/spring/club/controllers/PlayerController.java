@@ -1,19 +1,20 @@
 package com.spring.club.controllers;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Category;
 import com.spring.club.entities.enums.Role;
-import com.spring.club.services.*;
+import com.spring.club.services.CountryApiService;
+import com.spring.club.services.PlayerService;
+import com.spring.club.services.SeasonService;
+import com.spring.club.services.TeamService;
+import com.spring.club.services.UserService;
+import com.spring.club.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,17 +32,17 @@ import jakarta.servlet.http.HttpServletRequest;
 public class PlayerController {
 
     private final PlayerService playerService;
-    private final CountryService countryService;
+    private final CountryApiService countryApiService;
     private final SeasonService seasonService;
     private final TeamService teamService;
     private final UserService userService;
 
-    @Autowired
+    @Autowired(required = false)
     private StorageService storageService;
 
-    public PlayerController(PlayerService playerService, CountryService countryService, SeasonService seasonService, TeamService teamService, UserService userService) {
+    public PlayerController(PlayerService playerService, CountryApiService countryApiService, SeasonService seasonService, TeamService teamService, UserService userService) {
         this.playerService = playerService;
-        this.countryService = countryService;
+        this.countryApiService = countryApiService;
         this.seasonService = seasonService;
         this.teamService = teamService;
         this.userService = userService;
@@ -49,8 +50,9 @@ public class PlayerController {
 
     @GetMapping("form")
     public String showForm(@ModelAttribute Player p, Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        List<Country> countries = countryService.findAll();
+        List<String> countries = countryApiService.fetchCountriesFromApi();
         model.addAttribute("countries", countries);
+
         Season currentSeason = seasonService.getCurrentSeason();
         model.addAttribute("currentSeason", currentSeason);
         model.addAttribute("paid", false);
@@ -72,7 +74,7 @@ public class PlayerController {
         p.calculateCategory();
         MultipartFile image = p.getImage();
 
-        if (!image.isEmpty()) {
+        if (!image.isEmpty() && storageService != null) {
             try {
                 String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
                 String fileUrl = storageService.uploadFile("players/" + fileName, image.getBytes());
@@ -136,7 +138,8 @@ public class PlayerController {
     public String edit(@RequestParam("id") int id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Player p = playerService.findById(id);
 
-        List<Country> countries = countryService.findAll();
+        // Obtener países de la API externa
+        List<String> countries = countryApiService.fetchCountriesFromApi();
         List<User> users = userService.findAll();
         model.addAttribute("countries", countries);
         model.addAttribute("users", users);

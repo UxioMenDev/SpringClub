@@ -70,13 +70,13 @@
             <div class="mb-3">
                 <label for="country" class="form-label">País de residencia</label>
                 <select class="form-control" id="country" th:field="*{country}" required>
-                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+                    <option th:each="country : ${countries}" th:value="${country}" th:text="${country}"></option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="nationality" class="form-label">Nacionalidad</label>
                 <select class="form-control" id="nationality" th:field="*{nationality}">
-                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+                    <option th:each="country : ${countries}" th:value="${country}" th:text="${country}"></option>
                 </select>
             </div>
             <div class="mb-3">

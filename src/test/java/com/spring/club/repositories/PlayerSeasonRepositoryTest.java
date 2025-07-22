@@ -1,6 +1,5 @@
 package com.spring.club.repositories;
 
-import com.spring.club.entities.Country;
 import com.spring.club.entities.Player;
 import com.spring.club.entities.PlayerSeason;
 import com.spring.club.entities.Season;
@@ -21,16 +20,10 @@ class PlayerSeasonRepositoryTest {
     @Autowired
     private SeasonRepository seasonRepository;
     @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
     private PlayerSeasonRepository playerSeasonRepository;
 
     @Test
     void testFindByPlayerAndSeason() {
-        Country country = new Country();
-        country.setName("España");
-        country = countryRepository.save(country);
-
         Player player = new Player();
         player.setName("Juan");
         player.setBirthdate(new java.util.Date());
@@ -41,7 +34,7 @@ class PlayerSeasonRepositoryTest {
         player.setStreet("Calle Mayor 1");
         player.setZip(28001);
         player.setPlaceOfBirth("Madrid");
-        player.setCountry(country);
+        player.setCountry("España"); // Ahora es String
         player = playerRepository.save(player);
 
         Season season = new Season();

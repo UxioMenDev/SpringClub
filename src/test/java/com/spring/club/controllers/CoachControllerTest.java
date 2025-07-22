@@ -1,7 +1,6 @@
 package com.spring.club.controllers;
 
 import com.spring.club.entities.Coach;
-import com.spring.club.entities.Season;
 import com.spring.club.services.CoachService;
 import com.spring.club.services.SeasonService;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.Model;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Collections;

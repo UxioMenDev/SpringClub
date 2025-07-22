@@ -1,4 +1,3 @@
-
 package com.spring.club.repositories;
 
 import com.spring.club.entities.Player;
@@ -15,8 +14,6 @@ class PlayerRepositoryTest {
     @Autowired
     private PlayerRepository playerRepository;
 
-    @Autowired
-    private CountryRepository countryRepository;
 
     @Test
     void testFindById() {
@@ -30,12 +27,7 @@ class PlayerRepositoryTest {
         player.setStreet("Calle Mayor 1");
         player.setZip(28001);
         player.setPlaceOfBirth("Madrid");
-
-        com.spring.club.entities.Country country = new com.spring.club.entities.Country();
-        country.setName("España");
-        country = countryRepository.save(country);
-
-        player.setCountry(country);
+        player.setCountry("España");
 
         player = playerRepository.save(player);
 

@@ -51,11 +51,9 @@ public class Player {
     private String city;
     @Column(nullable = false)
     private Integer zip;
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Country country;
-    @ManyToOne
-    private Country nationality;
+    @Column(nullable = false)
+    private String country;
+    private String nationality;
     @Column(nullable = false)
     private String placeOfBirth;
     @ManyToOne
