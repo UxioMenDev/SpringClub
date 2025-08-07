@@ -132,22 +132,11 @@ public class SimpleDataGenerator implements CommandLineRunner {
 
             // Calcular categoría por edad
             player.calculateCategory();
-            playerService.assignToTeam(player);
 
             player = playerRepository.save(player);
 
-            // Asignar a equipo
-            Player finalPlayer = player;
-            Team team = teams.stream()
-                .filter(t -> t.getCategory() == finalPlayer.getCategory() && t.getGender() == finalPlayer.getSex())
-                .findFirst().orElse(null);
+            playerService.assignToTeam(player);
 
-            if (team != null) {
-                PlayerSeason ps = new PlayerSeason();
-                ps.setPlayer(player);
-                ps.setSeason(season);
-                playerSeasonRepository.save(ps);
-            }
         } catch (Exception e) {
             System.err.println("Error creando jugador: " + e.getMessage());
         }
