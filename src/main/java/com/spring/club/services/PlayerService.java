@@ -19,5 +19,5 @@ public interface PlayerService {
     void renovate(List<Long> ids);
     List<Player> findByUser(User user);
     List<Player> findByUserAndSeason(User user, Long season_id);
-
+    void assignToTeam(Player player);
 }

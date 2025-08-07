@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.spring.club.entities.PlayerSeason;
-import com.spring.club.entities.Season;
-import com.spring.club.entities.User;
+import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Category;
 import com.spring.club.entities.enums.Gender;
 import org.springframework.stereotype.Service;
-import com.spring.club.entities.Player;
 import com.spring.club.repositories.PlayerRepository;
 
 @Service
@@ -20,14 +17,15 @@ public class PlayerServiceImpl implements PlayerService {
     private SeasonService seasonService;
     private UserService userService;
     private  PlayerSeasonService playerSeasonService;
+    private  TeamService teamService;
 
 
-
-    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService, UserService userService, PlayerSeasonService playerSeasonService) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, SeasonService seasonService, UserService userService, PlayerSeasonService playerSeasonService, TeamService teamService) {
         this.playerRepository = playerRepository;
         this.seasonService = seasonService;
         this.userService = userService;
         this.playerSeasonService = playerSeasonService;
+        this.teamService = teamService;
     }
 
     @Override
@@ -104,6 +102,23 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<Player> findByUserAndSeason(User user, Long seasonId) {
         return playerRepository.findByUserAndPlayerSeasons_Season_Id(user, seasonId);
+    }
+
+    @Override
+    public void assignToTeam(Player player) {
+        Season currentSeason = seasonService.getCurrentSeason();
+
+        List<Team> teams = teamService.findBySeasonAndCategoryAndGender(
+                currentSeason,
+                player.getCategory(),
+                player.getSex()
+        );
+
+        if (!teams.isEmpty()) {
+            Team team = teams.get(0);
+            team.getPlayers().add(player);
+            teamService.create(team);
+        }
     }
 
 

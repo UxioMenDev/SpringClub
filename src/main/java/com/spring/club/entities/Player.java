@@ -1,13 +1,12 @@
 package com.spring.club.entities;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import com.spring.club.entities.enums.Gender;
 import com.spring.club.entities.enums.Category;
 
+import com.spring.club.services.SeasonService;
+import com.spring.club.services.TeamService;
 import jakarta.persistence.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,6 +65,7 @@ public class Player {
     @Column(name = "license_number")
     private String licenseNumber;
 
+
     public void calculateCategory() {
         if (this.birthdate == null) return;
 
@@ -93,4 +93,10 @@ public class Player {
         } else {
             this.category = Category.ALEVIN;
         }
-}}
+
+
+}
+
+
+
+}

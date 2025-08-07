@@ -34,8 +34,8 @@ public class PlayerController {
     private final PlayerService playerService;
     private final CountryApiService countryApiService;
     private final SeasonService seasonService;
-    private final TeamService teamService;
     private final UserService userService;
+    private final TeamService teamService;
 
     @Autowired(required = false)
     private StorageService storageService;
@@ -44,8 +44,8 @@ public class PlayerController {
         this.playerService = playerService;
         this.countryApiService = countryApiService;
         this.seasonService = seasonService;
-        this.teamService = teamService;
         this.userService = userService;
+        this.teamService = teamService;
     }
 
     @GetMapping("form")
@@ -91,7 +91,7 @@ public class PlayerController {
         } else {
             playerService.create(p, p.getUser().getUsername(), paid);
         }
-        assignToTeam(p);
+        playerService.assignToTeam(p);
         return "redirect:/player/list";
     }
 
@@ -184,21 +184,7 @@ public class PlayerController {
     }
 
 
-    private void assignToTeam(Player player) {
-        Season currentSeason = seasonService.getCurrentSeason();
 
-        List<Team> teams = teamService.findBySeasonAndCategoryAndGender(
-                currentSeason,
-                player.getCategory(),
-                player.getSex()
-        );
-
-        if (!teams.isEmpty()) {
-            Team team = teams.get(0);
-            team.getPlayers().add(player);
-            teamService.create(team);
-        }
-    }
 
 
 }

@@ -6,14 +6,24 @@ import com.spring.club.entities.*;
 import com.spring.club.entities.enums.Category;
 import com.spring.club.entities.enums.Gender;
 import com.spring.club.repositories.*;
+import com.spring.club.services.PlayerService;
 import com.spring.club.services.SeasonService;
+import com.spring.club.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,10 +36,13 @@ public class SimpleDataGenerator implements CommandLineRunner {
     @Autowired private TeamRepository teamRepository;
     @Autowired private SeasonService seasonService;
     @Autowired private PlayerSeasonRepository playerSeasonRepository;
+    @Autowired private StorageService storageService;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper mapper = new ObjectMapper();
     private final Random random = new Random();
+    @Autowired
+    private PlayerService playerService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -49,6 +62,8 @@ public class SimpleDataGenerator implements CommandLineRunner {
                     profiles.add(persona);
                 }
             }
+            System.out.println("JSON recibido: " + json);
+            System.out.println("Perfiles obtenidos: " + profiles.size());
 
             // Crear entrenador
             createCoach(profiles.getFirst());
@@ -101,11 +116,23 @@ public class SimpleDataGenerator implements CommandLineRunner {
             player.setCity(data.get("municipio").asText());
             player.setZip(Integer.valueOf(data.get("codigo_postal").asText().replace("\"", "")));
             player.setCountry("España");
-            player.setNationality("Española");
+            player.setNationality("España");
+
+            // Descargar y guardar imagen
+            try {
+                MultipartFile imageFile = convertUrlToMultipartFile("https://thispersondoesnotexist.com/");
+                String fileName = "player_" + System.currentTimeMillis() + "_" + random.nextInt(1000) + ".jpg";
+                String imageUrl = storageService.uploadFile("players/" + fileName, imageFile.getBytes());
+                player.setImagePath(imageUrl);
+                System.out.println("✅ Imagen guardada para " + player.getName() + ": " + imageUrl);
+            } catch (Exception e) {
+                System.err.println("⚠️ Error descargando imagen para " + player.getName() + ": " + e.getMessage());
+                player.setImagePath(null);
+            }
 
             // Calcular categoría por edad
             player.calculateCategory();
-
+            playerService.assignToTeam(player);
 
             player = playerRepository.save(player);
 
@@ -144,4 +171,21 @@ public class SimpleDataGenerator implements CommandLineRunner {
             }
         }
     }
+
+    public static MultipartFile convertUrlToMultipartFile(String fileUrl) throws IOException {
+        URL url = new URL(fileUrl);
+        URLConnection connection = url.openConnection();
+        String contentType = connection.getContentType();
+        if (contentType == null) contentType = "image/jpeg";
+        String fileName = "avatar.jpg";
+
+        try (InputStream inputStream = url.openStream()) {
+            byte[] fileBytes = inputStream.readAllBytes();
+            return new MockMultipartFile(fileName, fileName, contentType, fileBytes);
+        }
+    }
+
+
+
+
 }
