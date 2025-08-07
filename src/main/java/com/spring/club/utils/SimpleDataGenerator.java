@@ -46,7 +46,6 @@ public class SimpleDataGenerator implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (playerRepository.count() == 0 && coachRepository.count() == 0 && teamRepository.count() == 0) {
             System.out.println("🚀 Generando datos desde API...");
 
 
@@ -69,7 +68,9 @@ public class SimpleDataGenerator implements CommandLineRunner {
             createCoach(profiles.getFirst());
 
             // Crear equipos
+            if (teamRepository.count() == 0){
             createTeams(season);
+            }
 
             // Crear jugadores
             List<Team> teams = teamRepository.findAll();
@@ -78,7 +79,7 @@ public class SimpleDataGenerator implements CommandLineRunner {
             }
 
             System.out.println("✅ Datos generados!");
-        }
+
     }
 
     private JsonNode callAPI() {
@@ -131,10 +132,10 @@ public class SimpleDataGenerator implements CommandLineRunner {
             }
 
             // Calcular categoría por edad
-            player.calculateCategory();
 
             player = playerRepository.save(player);
 
+            player.calculateCategory();
             playerService.assignToTeam(player);
 
         } catch (Exception e) {
