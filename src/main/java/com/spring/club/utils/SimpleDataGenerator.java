@@ -46,41 +46,54 @@ public class SimpleDataGenerator implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-            System.out.println("🚀 Generando datos desde API...");
-
+        if (playerRepository.count() == 0 && coachRepository.count() == 0 && teamRepository.count() == 0) {
+            System.out.println("🚀 Generando datos...");
 
             // Obtener temporada activa
             Season season = seasonService.getCurrentSeason();
             if (season == null) return;
 
-            String json = restTemplate.getForObject("https://api.generadordni.es/profiles/person", String.class);
-            JsonNode root = mapper.readTree(json);
             List<JsonNode> profiles = new ArrayList<>();
-            if (root.isArray()) {
-                for (JsonNode persona : root) {
-                    profiles.add(persona);
+
+            try {
+                // Intentar obtener datos de la API
+                String json = restTemplate.getForObject("https://api.generadordni.es/profiles/person", String.class);
+                JsonNode root = mapper.readTree(json);
+
+                if (root.isArray()) {
+                    for (JsonNode persona : root) {
+                        profiles.add(persona);
+                    }
                 }
+                System.out.println("✅ Datos obtenidos de la API: " + profiles.size() + " perfiles");
+            } catch (Exception e) {
+                System.out.println("⚠️ Error al obtener datos de la API: " + e.getMessage());
+
             }
-            System.out.println("JSON recibido: " + json);
-            System.out.println("Perfiles obtenidos: " + profiles.size());
+
+            // Verificar que tenemos datos antes de continuar
+            if (profiles.isEmpty()) {
+                System.err.println("❌ No se pudieron obtener datos ni de la API ni mock. Abortando generación.");
+                return;
+            }
 
             // Crear entrenador
-            createCoach(profiles.getFirst());
+            createCoach(profiles.get(0));
 
             // Crear equipos
-            if (teamRepository.count() == 0){
             createTeams(season);
-            }
 
             // Crear jugadores
             List<Team> teams = teamRepository.findAll();
-            for (int i = 1; i < 10; i++) {
+            for (int i = 1; i < Math.min(profiles.size(), 10); i++) {
                 createPlayer(profiles.get(i), teams, season);
             }
 
             System.out.println("✅ Datos generados!");
-
+        }
     }
+
+
 
     private JsonNode callAPI() {
         try {
@@ -118,6 +131,12 @@ public class SimpleDataGenerator implements CommandLineRunner {
             player.setZip(Integer.valueOf(data.get("codigo_postal").asText().replace("\"", "")));
             player.setCountry("España");
             player.setNationality("España");
+            PlayerSeason playerSeason = new PlayerSeason();
+            playerSeason.setPlayer(player);
+            playerSeason.setSeason(season);
+            Set playerSeasons = new HashSet();
+            playerSeasons.add(playerSeason);
+            player.setPlayerSeasons(playerSeasons);
 
             // Descargar y guardar imagen
             try {
@@ -131,11 +150,9 @@ public class SimpleDataGenerator implements CommandLineRunner {
                 player.setImagePath(null);
             }
 
-            // Calcular categoría por edad
-
+            player.calculateCategory();
             player = playerRepository.save(player);
 
-            player.calculateCategory();
             playerService.assignToTeam(player);
 
         } catch (Exception e) {
