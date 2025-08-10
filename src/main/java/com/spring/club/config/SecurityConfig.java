@@ -30,6 +30,8 @@ public class SecurityConfig {
                     .requestMatchers("/login").permitAll()
                     .requestMatchers("/register").permitAll()
                     .requestMatchers("/add").permitAll()
+                    .requestMatchers("/files/**").authenticated()
+                    .requestMatchers("/uploads/**").authenticated()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .requestMatchers("/coach/**").hasAnyRole("ADMIN", "COACH")
                     .anyRequest().authenticated())

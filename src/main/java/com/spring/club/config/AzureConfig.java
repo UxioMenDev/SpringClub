@@ -39,21 +39,28 @@ public class AzureConfig {
             );
         }
 
-        // Priorizar connection string si está disponible
-        if (hasConnectionString) {
+        try {
+            // Priorizar connection string si está disponible
+            if (hasConnectionString) {
+                return new BlobServiceClientBuilder()
+                        .connectionString(connectionString)
+                        .buildClient();
+            }
+
+            // Si no hay connection string, usar account name y key
+            StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
+            String blobEndpoint = endpoint.isEmpty() ?
+                String.format("https://%s.blob.core.windows.net", accountName) : endpoint;
+
             return new BlobServiceClientBuilder()
-                    .connectionString(connectionString)
+                    .endpoint(blobEndpoint)
+                    .credential(credential)
                     .buildClient();
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                "Failed to create Azure Blob Service Client. " +
+                "Please verify your Azure Storage credentials. Error: " + e.getMessage(), e
+            );
         }
-
-        // Si no hay connection string, usar account name y key
-        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
-        String blobEndpoint = endpoint.isEmpty() ?
-            String.format("https://%s.blob.core.windows.net", accountName) : endpoint;
-
-        return new BlobServiceClientBuilder()
-                .endpoint(blobEndpoint)
-                .credential(credential)
-                .buildClient();
     }
 }

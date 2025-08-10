@@ -3,14 +3,11 @@ package com.spring.club.services;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.sas.BlobSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.time.OffsetDateTime;
 
 @Service
 @ConditionalOnProperty(name = "storage.provider", havingValue = "azure")
@@ -47,18 +44,7 @@ public class AzureBlobService implements StorageService {
 
     @Override
     public String getPublicUrl(String fileName) {
-        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
-        BlobClient blobClient = containerClient.getBlobClient(fileName);
-
-        // Generar URL con SAS token para acceso temporal (válido por 24 horas)
-        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(
-            OffsetDateTime.now().plusDays(1), // Válido por 24 horas
-            permission
-        );
-
-        String sasToken = blobClient.generateSas(sasValues);
-        return blobClient.getBlobUrl() + "?" + sasToken;
+        return "/files/" + fileName;
     }
 
     @Override

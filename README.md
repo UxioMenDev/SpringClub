@@ -91,20 +91,32 @@ Log in with default administrator credentials:
 
 ### Azure Blob Storage
 - **Service**: Azure Blob Storage
-- **Features**: SAS tokens for secure access
+- Files served through Spring Boot application
+- Secure access controlled by application
 
-## 🔐 Security
+## 🔧 Environment Variables
 
-### AWS S3
-- Uses bucket policies for access control
-- Public read access for media files
-- IAM roles for secure access
+```env
+DATABASE_URL=jdbc:your-database-url
+DATABASE_USERNAME=your-username
+DATABASE_PASSWORD=your-password
 
-### Azure Blob Storage
-- Uses SAS tokens for secure access
-- **No public access required**
-- Time-limited URLs (1 hour default)
-- Automatic token regeneration
+### Storage Provider Selection
+# Choose storage provider: azure or aws, local by default
+STORAGE_PROVIDER=local
+
+# AWS S3 Configuration 
+AWS_REGION=your-region
+AWS_S3_BUCKET_NAME=your-bucket-name
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+
+# Azure Blob Storage Configuration 
+AZURE_STORAGE_ACCOUNT_NAME=your-storage-account
+AZURE_STORAGE_CONTAINER_NAME=media
+AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=https;AccountName=...
+```
+
 
 
 ## Images
